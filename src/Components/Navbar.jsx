@@ -1,11 +1,36 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaBriefcaseMedical } from 'react-icons/fa';
 import { HiMenu, HiX } from 'react-icons/hi';
+import { context } from '../index.js';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
   const location = useLocation(); // Get the current route path
   const [isOpen, setIsOpen] = useState(false); // State to toggle mobile menu
+
+  const { isAuthenticated, setIsAuthenticated } = useContext(context);
+
+  const handleLogout = async () => {
+    await axios
+      .get("http://localhost:4000/api/v1/user/patient/logout", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        toast.success(res.data.message);
+        setIsAuthenticated(false);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
+
+  const navigateTo = useNavigate();
+
+  const goToLogin = () => {
+    navigateTo("/login");
+  };
 
   // Determine which link is active based on the current route
   const isActive = (path) => location.pathname === path;
@@ -23,8 +48,8 @@ const Navbar = () => {
 
         {/* Mobile Menu Button */}
         <div className='md:hidden flex items-center'>
-          <button 
-            onClick={() => setIsOpen(!isOpen)} 
+          <button
+            onClick={() => setIsOpen(!isOpen)}
             className='text-gray-600 hover:text-gray-800 focus:outline-none'
           >
             {isOpen ? <HiX className='w-6 h-6' /> : <HiMenu className='w-6 h-6' />}
@@ -33,55 +58,62 @@ const Navbar = () => {
 
         {/* Navigation Links (Desktop) */}
         <div className='hidden md:flex space-x-8'>
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className={`px-4 py-2 text-lg font-medium transition-colors duration-300 ${isActive('/') ? 'text-indigo-600' : 'text-gray-600 hover:text-indigo-600'}`}
           >
             Home
           </Link>
-          <Link 
-            to="/appointment" 
+          <Link
+            to="/appointment"
             className={`px-4 py-2 text-lg font-medium transition-colors duration-300 ${isActive('/appointment') ? 'text-indigo-600' : 'text-gray-600 hover:text-indigo-600'}`}
           >
             Appointment
           </Link>
-          <Link 
-            to="/about-us" 
-            className={`px-4 py-2 text-lg font-medium transition-colors duration-300 ${isActive('/about-us') ? 'text-indigo-600' : 'text-gray-600 hover:text-indigo-600'}`}
+          <Link
+            to="/about"
+            className={`px-4 py-2 text-lg font-medium transition-colors duration-300 ${isActive('/about') ? 'text-indigo-600' : 'text-gray-600 hover:text-indigo-600'}`}
           >
             About Us
           </Link>
         </div>
 
         {/* Login Button (Desktop) */}
-        <div className='hidden md:flex'>
-          <Link to="/login">
-            <button className='bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50'>
-              Login
-            </button>
-          </Link>
-        </div>
+        {isAuthenticated ?
+          <div className='hidden md:flex'>
+              <button onClick={handleLogout} className='bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50'>
+                Logout
+              </button>
+          </div>
+          :
+
+          <div className='hidden md:flex'>
+              <button onClick={goToLogin} className='bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50'>
+                Login
+              </button>
+          </div>
+        }
       </div>
 
       {/* Mobile Menu (Hidden by default, shown when `isOpen` is true) */}
       <div className={`md:hidden ${isOpen ? 'block' : 'hidden'} bg-gray-100`}>
-        <Link 
-          to="/" 
+        <Link
+          to="/"
           className={`block px-4 py-2 text-lg font-medium ${isActive('/') ? 'text-indigo-600' : 'text-gray-600 hover:text-indigo-600'}`}
           onClick={() => setIsOpen(false)}
         >
           Home
         </Link>
-        <Link 
-          to="/appointment" 
+        <Link
+          to="/appointment"
           className={`block px-4 py-2 text-lg font-medium ${isActive('/appointment') ? 'text-indigo-600' : 'text-gray-600 hover:text-indigo-600'}`}
           onClick={() => setIsOpen(false)}
         >
           Appointment
         </Link>
-        <Link 
-          to="/about-us" 
-          className={`block px-4 py-2 text-lg font-medium ${isActive('/about-us') ? 'text-indigo-600' : 'text-gray-600 hover:text-indigo-600'}`}
+        <Link
+          to="/about"
+          className={`block px-4 py-2 text-lg font-medium ${isActive('/about') ? 'text-indigo-600' : 'text-gray-600 hover:text-indigo-600'}`}
           onClick={() => setIsOpen(false)}
         >
           About Us

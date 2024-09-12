@@ -7,19 +7,48 @@ import Appointment from './Pages/Appointment';
 import Login from './Pages/Login'
 import Register from './Pages/Register'
 import Footer from './Components/Footer';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useContext, useEffect } from 'react';
+import { context } from './index.js';
+import axios from 'axios';
+
 
 function App() {
+
+  const {isAuthenticated, setIsAuthenticated, setUser} = useContext (context);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/api/v1/user/patient/me",
+          {
+            withCredentials: true,
+          }
+        );
+        setIsAuthenticated(true);
+        setUser(response.data.user);
+      } catch (error) {
+        setIsAuthenticated(false);
+        setUser({});
+      }
+    };
+    fetchUser();
+  }, [isAuthenticated, setIsAuthenticated, setUser]);
+
   return (
     <div className="App">
       <Router>
         <Navbar />
         <Routes>
           <Route path='/' element = { <Home /> } />
-          <Route path='/about-us' element = { <AboutUs /> } />
+          <Route path='/about' element = { <AboutUs /> } />
           <Route path='/appointment' element = { <Appointment /> } />
           <Route path='/login' element = { <Login /> } />
           <Route path='/register' element = { <Register /> } />
         </Routes>
+        <ToastContainer position='top-center' />
         <Footer />
       </Router>
     </div>
