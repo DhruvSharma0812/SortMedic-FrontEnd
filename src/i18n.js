@@ -21,7 +21,7 @@ i18n
               },
               telehealth: {
                 title: "Telehealth Integration",
-                description: "Facilitates remote consultations with healthcare professionals through video calls. Includes appointment scheduling, reminders, and secure communication for accessible and convenient medical care.",
+                description: "Facilitates remote consultations with healthcare professionals through video calls. Includes appointment scheduling, reminders, and secure commuAadharation for accessible and convenient medical care.",
               },
               education: {
                 title: "Health Education",
