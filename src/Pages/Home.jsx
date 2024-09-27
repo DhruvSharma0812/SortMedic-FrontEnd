@@ -4,6 +4,7 @@ import Information from '../Components/Information';
 import Header from '../Components/Header';
 import MessageForm from '../Components/MessageForm';
 import Department from '../Components/Department';
+import ChatBot from '../Components/ChatBot';
 
 const Home = () => {
   return (
@@ -14,6 +15,7 @@ const Home = () => {
         <Information />
         <Department />
         <MessageForm />
+        <ChatBot />
       </main>
     </div>
   )

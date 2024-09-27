@@ -7,6 +7,7 @@ import Appointment from './Pages/Appointment';
 import Login from './Pages/Login'
 import Register from './Pages/Register'
 import Footer from './Components/Footer';
+import SymptomChecker from './Pages/SymptomChecker'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useContext, useEffect } from 'react';
@@ -47,6 +48,7 @@ function App() {
           <Route path='/appointment' element = { <Appointment /> } />
           <Route path='/login' element = { <Login /> } />
           <Route path='/register' element = { <Register /> } />
+          <Route path='/symptomchecker' element = { <SymptomChecker /> } />
         </Routes>
         <ToastContainer position='top-center' />
         <Footer />
