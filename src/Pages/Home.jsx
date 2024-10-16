@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <div>
       <Header />
-      <main className='p-8'>
+      <main className=''>
         <Features />
         <Information />
         <Department />
